@@ -1,12 +1,12 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 
 // this is supposed to be a subdocument field in the Thought Model.
-// Schema to create a course model
+// Schema to create a thought model
 const reactionSchema = new Schema(
   {
     reactionId: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
     },
     reactionBody: {
       type: Boolean,
@@ -30,6 +30,5 @@ const reactionSchema = new Schema(
   }
 );
 
-const Reaction = model('reaction', reactionSchema);
 
-module.exports = Reaction;
+module.exports = reactionSchema;
