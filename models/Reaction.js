@@ -9,18 +9,17 @@ const reactionSchema = new Schema(
       default: () => new Types.ObjectId(),
     },
     reactionBody: {
-      type: Boolean,
-      default: true,
+      type: String,
+      required: true,
+      maxLength: 280,
     },
     username: {
-      type: Date,
-      default: Date.now(),
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Date,
-      // Sets a default value of 12 weeks from now
-      default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000),
-    },
+      default: Date.now(),    },
   },
   {
     toJSON: {
