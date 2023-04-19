@@ -7,17 +7,21 @@ const userSchema = new Schema(
     username: {
       type: String,
       unique: true,
+      trim: true,
       required: true,
-      max_length: 50,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      //validator for email address
       validate: {
-        validator: () => Promise.resolve(false),
-        message: 'Email validation failed'
-      }
+        validator: function(v) {
+            return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        },
+        message: "Please enter a valid email"
+    },
+    required: [true, "Email required"]
     },
 
     thoughts: [

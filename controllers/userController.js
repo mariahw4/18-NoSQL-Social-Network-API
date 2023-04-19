@@ -1,27 +1,4 @@
-const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
-
-// Aggregate function to get the number of users overall
-const totalUsers = async () =>
-  User.aggregate()
-    .count('userCount')
-    .then((numberOfUsers) => numberOfUsers);
-
-// Aggregate function for getting the overall grade using $avg
-// const grade = async (userId) =>
-//   User.aggregate([
-//     // only include the given user by using $match
-//     { $match: { _id: ObjectId(userId) } },
-//     {
-//       $unwind: '$reactions',
-//     },
-//     {
-//       $group: {
-//         _id: ObjectId(userId),
-//         overallGrade: { $avg: '$reactions.score' },
-//       },
-//     },
-//   ]);
 
 module.exports = {
   // Get all users
@@ -48,7 +25,7 @@ module.exports = {
           ? res.status(404).json({ message: 'No user with that ID' })
           : res.json({
               user,
-              grade: await grade(req.params.userId),
+              grade: await thought(req.params.userId),
             })
       )
       .catch((err) => {
@@ -62,16 +39,29 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
+
+  // update single user by  Id
+
+  updateSingleUser({params, body}, res) {
+    User.findOneAndUpdate({ _id: params.userId }, body, { runValidators: true })
+    .then((user) => {
+      if(!user) {
+        res.status(404).json({ message: "No user found with this id" });
+        return;
+      }
+      res.json (user);
+    })
+    .catch(err => res.status(500).json(err));  
+  },
+
   // Delete a user and remove them from the thought
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No such user exists' })
-          : Thought.findOneAndUpdate(
-              { users: req.params.userId },
-              { $pull: { users: req.params.userId } },
-              { new: true }
+          : Thought.deleteMany(
+              { username: user.username },
             )
       )
       .then((thought) =>
@@ -86,6 +76,47 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+//add a Friend by Id
+  //use path /api/users/userId/friends/friendId
+  addFriend(req, res) {
 
- 
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $addToSet: { friends: req.params.friendId }},
+      { new: true, runValidators: true }
+    ) 
+    .then(user => {
+      if(!user) {
+        res.status(404).json({ message: "No user found with this Id" })
+        return;
+      }
+      res.json(user);
+    })
+    .catch(err => res.status(500).json(err));
+  },
+
+  //delete a friend by Id
+  //use route /api/users/userId/friends/friendId
+  deleteFriend({ params}, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId }},
+      { new: true, runValidators: true }
+      )
+      .then(user => {
+        if(!user) {
+          res.status(404).json({ message: "No user found with this Id" });
+        return;
+      }
+      res.json(user);
+    })
+      .catch(err => res.status(500).json(err))
+    },
 };
+ 
+
+// Aggregate function to get the number of users overall
+const totalUsers = async () =>
+  User.aggregate()
+    .count('userCount')
+    .then((numberOfUsers) => numberOfUsers);
