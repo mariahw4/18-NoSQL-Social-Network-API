@@ -47,7 +47,7 @@ Screenshot of Data displayed in Insomnia
 ### Links
 
 - Solution URL: [Github Repo](https://github.com/mariahw4/18-NoSQL-Social-Network-API)
-- Live Deployment: [Walkthrough Video](https://your-live-site-url.com)
+- Live Deployment: [Walkthrough Video](https://drive.google.com/file/d/1armq07g0PJujpQ0r6yLZx1_fnXShdEC3/view)
 
 ## My process
 
