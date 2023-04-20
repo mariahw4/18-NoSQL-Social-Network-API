@@ -16,11 +16,6 @@ router.route('/').get(getUsers).post(createUser);
 router.route('/:userId').get(getSingleUser).delete(deleteUser).post(updateSingleUser);
 
 router.route('/:userId/friends/:friendId').post(addFriend).delete(deleteFriend);
-// these got put on the thoughtRoutes
-// // /api/users/:userId/reactions
-// router.route('/:userId/reactions').post(addreaction);
 
-// // /api/users/:userId/reactions/:reactionId
-// router.route('/:userId/reactions/:reactionId').delete(removereaction);
 
 module.exports = router;

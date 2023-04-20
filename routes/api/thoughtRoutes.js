@@ -9,28 +9,26 @@ const {
   removeReaction,
 } = require('../../controllers/thoughtController.js');
 
-// /api/Thoughts
-router.route('/').get(getThoughts)
+// /api/thoughts
+router.route('/').get(getThoughts);
 
+// api/thoughts/userId
 router.route('/:userId').post(createThought);
 
-// /api/Thoughts/:ThoughtId
-router
-  .route('/:thoughtId')
+// /api/thoughts/:thoughtId
+router.route('/:thoughtId')
   .get(getSingleThought)
-  .put(updateThought);
+  .put(updateThought)
+  .delete(deleteThought);
 
-router.route('/:thoughtId/users/:userId').delete(deleteThought);
+// router.route('/:thoughtId/users/:userId')
 
 
   // adding reactions here 
-  // /api/users/:userId/reactions
+  // /api/thoughts/:thoughtId/reactions
 router.route('/:thoughtId/reactions').post(addReaction);
 
-// /api/users/:userId/reactions/:reactionId
+// /api/thoughts/:thoughtId/reactions/:reactionId
 router.route('/:thoughtId/reactions/:reactionId').delete(removeReaction);
 
 module.exports = router;
-
-
-// need to include reactions here as subroutes somehow?
