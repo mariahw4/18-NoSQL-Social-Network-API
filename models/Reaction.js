@@ -11,16 +11,16 @@ const reactionSchema = new Schema(
     reactionBody: {
       type: String,
       required: true,
-      maxLength: 280,
+      maxLength: 280
     },
     username: {
       type: String,
-      required: true,
+      required: true
     },
     createdAt: {
       type: Date,
       default: Date.now(),
-      get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
+      // get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
     },
   },
   {
